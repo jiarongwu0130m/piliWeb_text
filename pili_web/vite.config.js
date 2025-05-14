@@ -1,12 +1,13 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
+import { resolve } from "node:path";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueDevTools from "vite-plugin-vue-devtools";
 
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import Pages from 'vite-plugin-pages';
+import Pages from "vite-plugin-pages";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -28,9 +29,18 @@ export default defineConfig({
       //	dirs: ["src/views"], // 如果不改資料夾用這個
     }),
   ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+  base: "/piliWeb_text/",
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        404: resolve(__dirname, "index.html"), // ⬅ fallback 支援
+      },
     },
   },
-})
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
